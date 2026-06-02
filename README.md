@@ -26,10 +26,10 @@ The goal is to gain hands-on experience with production-like environments using 
 
 | Component | Details            |
 | --------- | ------------------ |
-| Device    | Old Laptop         |
-| CPU       | Your CPU Model     |
-| RAM       | Your RAM Size      |
-| Storage   | SSD/HDD Details    |
+| Device    | Lenovo G50-80      |
+| CPU       | i3 5th gen @2Ghz   |
+| RAM       | 8 GB               |
+| Storage   | 1 TB HDD           |
 | Network   | Home Network Setup |
 
 ---
