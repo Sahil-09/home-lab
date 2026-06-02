@@ -36,7 +36,7 @@ The goal is to gain hands-on experience with production-like environments using 
 
 ## 🛠️ Operating System
 
-* Ubuntu Server / Debian / Fedora (Update as applicable)
+* Linux Mint
 * SSH Remote Management
 * Automated Updates
 * Backup Configuration
@@ -145,10 +145,10 @@ home-lab/
 
 | Service       | Status         |
 | ------------- | -------------- |
-| Docker        | ✅ Running      |
-| Monitoring    | ✅ Running      |
-| Reverse Proxy | ✅ Running      |
-| CI/CD         | 🚧 In Progress |
+| Docker        | 🚧 In-Progress |
+| Monitoring    | 🚧 Learning    |
+| Reverse Proxy | 🚧 Learning    |
+| CI/CD         | 🚧 Learning    |
 | Kubernetes    | 🚧 Learning    |
 
 ---
