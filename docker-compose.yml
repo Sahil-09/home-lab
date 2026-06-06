@@ -1,0 +1,81 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6380:6380"
+    command: redis-server --appendonly yes
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - proxy  
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8080:80"
+    env_file:
+      - .env  
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
+      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+    networks:
+      - proxy
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID     
+    volumes:
+      - ./nextcloud:/home/sahil/Public/nextcloud/
+
+  nginx:    
+    image: 'jc21/nginx-proxy-manager:2.15.1'
+    restart: unless-stopped
+    environment:
+      TZ: "Asia/Kolkata"
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - proxy         
+
+volumes:
+  pgdata:
+networks:
+  proxy:
+    external: true  
